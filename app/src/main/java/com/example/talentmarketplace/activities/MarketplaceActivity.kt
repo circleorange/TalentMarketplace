@@ -2,6 +2,9 @@ package com.example.talentmarketplace.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import com.example.talentmarketplace.R
 import com.example.talentmarketplace.databinding.ActivityJobBinding
 import com.example.talentmarketplace.main.MainApp
 import com.example.talentmarketplace.models.MarketplaceModel
@@ -10,19 +13,21 @@ import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber.i
 
 class MarketplaceActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityJobBinding
-
     var job = MarketplaceModel()
-
     lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        i("onCreate() - Job Activity started")
+
         binding = ActivityJobBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        i("onCreate() - Marketplace Activity started")
+        binding.toolbarAdd.title = title
+        setSupportActionBar(binding.toolbarAdd)
 
         app = application as MainApp
 
@@ -33,17 +38,23 @@ class MarketplaceActivity : AppCompatActivity() {
             job.description = binding.description.text.toString()
 
             if (job.title.isEmpty()) {
-                i("onCreate() - add button pressed - invalid")
+                i("onCreate() - add button pressed - invalid input")
 
                 Snackbar
                     .make(it, "Job title cannot be empty", Snackbar.LENGTH_LONG)
                     .show() }
             else {
-                i("onCreate() - add button pressed - valid")
+                i("onCreate() - add button pressed - valid input: $job")
 
                 app.jobs.add(job.copy())
-                for (i in app.jobs.indices) {
-                    i("Job[$i]: ${this.app.jobs[i]}") } }
-        }
-    }
+                setResult(RESULT_OK)
+                finish() } } }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_job, menu)
+        return super.onCreateOptionsMenu(menu) }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) { R.id.item_cancel -> { finish() } }
+        return super.onOptionsItemSelected(item) }
 }

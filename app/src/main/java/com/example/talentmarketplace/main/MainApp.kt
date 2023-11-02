@@ -14,5 +14,8 @@ class MainApp: Application() {
 
         Timber.plant(Timber.DebugTree())
         i("onCreate() - application started")
+
+        jobs.add(MarketplaceModel("One", "About One"))
+        jobs.add(MarketplaceModel("Two", "About Two"))
     }
 }
