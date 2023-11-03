@@ -10,10 +10,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.talentmarketplace.R
 import com.example.talentmarketplace.adapters.JobAdapter
+import com.example.talentmarketplace.adapters.JobListener
 import com.example.talentmarketplace.databinding.ActivityJobListBinding
 import com.example.talentmarketplace.main.MainApp
+import com.example.talentmarketplace.models.MarketplaceModel
 
-class JobListActivity : AppCompatActivity() {
+class JobListActivity : AppCompatActivity(), JobListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityJobListBinding
@@ -31,7 +33,7 @@ class JobListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = JobAdapter(app.jobs) }
+        binding.recyclerView.adapter = JobAdapter(app.jobs.findAll()) }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -47,5 +49,18 @@ class JobListActivity : AppCompatActivity() {
     private val getResults = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult() ) {
         if (it.resultCode == Activity.RESULT_OK) {
-            (binding.recyclerView.adapter)?.notifyItemRangeChanged(0, app.jobs.size) } }
+            (binding
+                .recyclerView
+                .adapter)?.notifyItemRangeChanged(0, app.jobs.findAll().size) } }
+
+    override fun onJobClick(job: MarketplaceModel) {
+        val launcherIntent = Intent(this, MarketplaceActivity::class.java)
+        getClickResult.launch(launcherIntent) }
+
+    private val getClickResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult() ) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            (binding
+                .recyclerView
+                .adapter)?.notifyItemRangeChanged(0, app.jobs.findAll().size) } }
 }

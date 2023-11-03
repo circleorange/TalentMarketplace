@@ -46,7 +46,7 @@ class MarketplaceActivity : AppCompatActivity() {
             else {
                 i("onCreate() - add button pressed - valid input: $job")
 
-                app.jobs.add(job.copy())
+                app.jobs.create(job.copy())
                 setResult(RESULT_OK)
                 finish() } } }
 

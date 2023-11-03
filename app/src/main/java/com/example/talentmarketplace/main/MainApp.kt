@@ -1,13 +1,14 @@
 package com.example.talentmarketplace.main
 
 import android.app.Application
+import com.example.talentmarketplace.models.JobMemStore
 import com.example.talentmarketplace.models.MarketplaceModel
 import timber.log.Timber
 import timber.log.Timber.i
 
 class MainApp: Application() {
 
-    val jobs = ArrayList<MarketplaceModel>()
+    val jobs = JobMemStore()
 
     override fun onCreate() {
         super.onCreate()
@@ -15,7 +16,7 @@ class MainApp: Application() {
         Timber.plant(Timber.DebugTree())
         i("onCreate() - application started")
 
-        jobs.add(MarketplaceModel("One", "About One"))
-        jobs.add(MarketplaceModel("Two", "About Two"))
+        jobs.create(MarketplaceModel("Test One", "About One"))
+        jobs.create(MarketplaceModel("Test Two", "About Two"))
     }
 }

@@ -6,11 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.talentmarketplace.databinding.CardJobBinding
 import com.example.talentmarketplace.models.MarketplaceModel
 
+interface JobListener {
+    fun onJobClick(job: MarketplaceModel)
+}
+
 class JobAdapter constructor(private var jobs: List<MarketplaceModel>):
     RecyclerView.Adapter<JobAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        val binding = CardJobBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = CardJobBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
         return MainHolder(binding) }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
