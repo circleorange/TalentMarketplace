@@ -33,7 +33,7 @@ class JobListActivity : AppCompatActivity(), JobListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = JobAdapter(app.jobs.findAll()) }
+        binding.recyclerView.adapter = JobAdapter(app.jobs.findAll(), this) }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -55,6 +55,7 @@ class JobListActivity : AppCompatActivity(), JobListener {
 
     override fun onJobClick(job: MarketplaceModel) {
         val launcherIntent = Intent(this, MarketplaceActivity::class.java)
+        launcherIntent.putExtra("job_edit", job)
         getClickResult.launch(launcherIntent) }
 
     private val getClickResult = registerForActivityResult(
