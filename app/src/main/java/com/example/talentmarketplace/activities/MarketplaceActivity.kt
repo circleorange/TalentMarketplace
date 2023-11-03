@@ -20,8 +20,9 @@ class MarketplaceActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         i("onCreate() - Job Activity started")
+
+        var edit = false
 
         binding = ActivityJobBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -32,9 +33,11 @@ class MarketplaceActivity : AppCompatActivity() {
         app = application as MainApp
 
         if (intent.hasExtra("job_edit")) {
+            edit = true
             job = intent.extras?.getParcelable("job_edit")!!
             binding.jobTitle.setText(job.title)
-            binding.description.setText(job.description) }
+            binding.description.setText(job.description)
+            binding.btnAdd.setText(R.string.save_job) }
 
         binding.btnAdd.setOnClickListener() {
             i("onCreate() - add button pressed")
@@ -45,11 +48,12 @@ class MarketplaceActivity : AppCompatActivity() {
             if (job.title.isEmpty()) {
                 i("onCreate() - add button pressed - invalid input")
                 Snackbar
-                    .make(it, "Job title cannot be empty", Snackbar.LENGTH_LONG)
+                    .make(it, R.string.invalid_job_title, Snackbar.LENGTH_LONG)
                     .show() }
             else {
                 i("onCreate() - add button pressed - valid input: $job")
-                app.jobs.create(job.copy())
+                if (edit) { app.jobs.update(job.copy()) }
+                else { app.jobs.create(job.copy()) }
                 setResult(RESULT_OK)
                 finish() } } }
 

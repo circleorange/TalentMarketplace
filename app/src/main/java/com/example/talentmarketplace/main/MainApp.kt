@@ -14,9 +14,5 @@ class MainApp: Application() {
         super.onCreate()
 
         Timber.plant(Timber.DebugTree())
-        i("onCreate() - application started")
-
-        jobs.create(MarketplaceModel("Test One", "About One"))
-        jobs.create(MarketplaceModel("Test Two", "About Two"))
-    }
+        i("onCreate() - application started") }
 }

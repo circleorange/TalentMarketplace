@@ -5,4 +5,6 @@
     <string name="hint_jobDescription">Job Description</string>
     <string name="menu_addJob">Add</string>
     <string name="menu_cancelJob">Cancel</string>
+    <string name="invalid_job_title">Job title cannot be empty</string>
+    <string name="save_job">Save Job</string>
 </resources>
