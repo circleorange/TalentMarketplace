@@ -1,10 +1,17 @@
 <resources>
     <string name="app_name">Talent Marketplace</string>
-    <string name="button_addJob">Add Job</string>
+
     <string name="hint_jobTitle">Job Title</string>
     <string name="hint_jobDescription">Job Description</string>
+    <string name="invalid_job_title">Job title cannot be empty</string>
+
     <string name="menu_addJob">Add</string>
     <string name="menu_cancelJob">Cancel</string>
-    <string name="invalid_job_title">Job title cannot be empty</string>
+    <string name="menu_deleteJob">Delete</string>
+
+    <string name="button_addJob">Add Job</string>
     <string name="save_job">Save Job</string>
+
+    <string name="button_location">Set Location</string>
+    <string name="title_activity_map">MapActivity</string>
 </resources>

@@ -19,6 +19,7 @@ class JobListActivity : AppCompatActivity(), JobListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityJobListBinding
+    private var position: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +54,10 @@ class JobListActivity : AppCompatActivity(), JobListener {
                 .recyclerView
                 .adapter)?.notifyItemRangeChanged(0, app.jobs.findAll().size) } }
 
-    override fun onJobClick(job: MarketplaceModel) {
+    override fun onJobClick(job: MarketplaceModel, listIndex: Int) {
         val launcherIntent = Intent(this, MarketplaceActivity::class.java)
         launcherIntent.putExtra("job_edit", job)
+        position = listIndex
         getClickResult.launch(launcherIntent) }
 
     private val getClickResult = registerForActivityResult(
@@ -63,5 +65,8 @@ class JobListActivity : AppCompatActivity(), JobListener {
         if (it.resultCode == Activity.RESULT_OK) {
             (binding
                 .recyclerView
-                .adapter)?.notifyItemRangeChanged(0, app.jobs.findAll().size) } }
+                .adapter)?.notifyItemRangeChanged(0, app.jobs.findAll().size) }
+        // delete job operation
+        else if (it.resultCode == 99 ) {
+            binding.recyclerView.adapter = JobAdapter(app.jobs.findAll(), this) } }
 }

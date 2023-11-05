@@ -19,10 +19,18 @@ class JobMemStore: JobStore {
 
     override fun update(job: MarketplaceModel) {
         var foundJob: MarketplaceModel? = jobs.find { updatedJob -> updatedJob.id == job.id }
+
         if (foundJob != null) {
             foundJob.title = job.title
             foundJob.description = job.description
-            logAll() } }
+            foundJob.lat = job.lat
+            foundJob.lng = job.lng
+            foundJob.zoom = job.zoom
+
+            logAll() }
+    }
+
+    override fun delete(job: MarketplaceModel) { jobs. remove(job) }
 
     fun logAll() {
         jobs.forEach{ i("$it") } }

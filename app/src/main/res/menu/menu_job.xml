@@ -7,4 +7,10 @@
         android:id="@+id/item_cancel"
         android:title="@string/menu_cancelJob"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/item_delete"
+        android:title="@string/menu_deleteJob"
+        android:visible="false"
+        app:showAsAction="always" />
 </menu>
