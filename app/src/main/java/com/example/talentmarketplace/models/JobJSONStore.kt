@@ -16,7 +16,6 @@ import com.google.gson.JsonSerializer
 import com.google.gson.reflect.TypeToken
 import timber.log.Timber.i
 import java.lang.reflect.Type
-import java.util.Date
 import java.util.Random
 
 const val JSON_FILE = "jobs.json"
@@ -44,12 +43,13 @@ class JobJSONStore(private val context: Context): JobStore {
         jobs.add(job)
         serialize() }
 
-    override fun update(job: MarketplaceModel) {
+    override fun update(updatedJob: MarketplaceModel) {
         val jobsList = findAll() as ArrayList<MarketplaceModel>
-        var foundJob: MarketplaceModel? = jobsList.find { updatedJob -> updatedJob.id == job.id }
-        if (foundJob == null) { i("update() - null job found"); return }
+        var foundJob: MarketplaceModel? = jobsList.find {
+                existingJob -> existingJob.id == updatedJob.id }
+        if (foundJob == null) { i("update() - null job found"); return } // safe guard
 
-        updateJob(foundJob, job)
+        updateJob(foundJob, updatedJob)
         serialize() }
 
     override fun delete(job: MarketplaceModel) {
