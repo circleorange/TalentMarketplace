@@ -18,7 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber.i
 import java.util.Calendar
 
-class MarketplaceActivity : AppCompatActivity() {
+class JobActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityJobBinding
     var job = MarketplaceModel()
@@ -124,10 +124,10 @@ class MarketplaceActivity : AppCompatActivity() {
             job.minSalary = binding.salaryRange.values[0]
             job.maxSalary = binding.salaryRange.values[1]
 
-            if (job.title.isEmpty()) {
+            if (job.title.isEmpty() || job.description.isEmpty() || job.companyName.isEmpty()) {
                 i("onCreate() - add job button pressed - invalid input")
                 Snackbar
-                    .make(it, R.string.invalid_job_title, Snackbar.LENGTH_LONG)
+                    .make(it, R.string.invalid_job_input, Snackbar.LENGTH_LONG)
                     .show()
             }
             else {

@@ -8,7 +8,7 @@
     <string name="hint_endDate">End Date</string>
     <string name="hint_salaryRange">Salary Range</string>
     
-    <string name="invalid_job_title">Job title cannot be empty</string>
+    <string name="invalid_job_input">Company name, title, description cannot be empty</string>
 
     <string name="label_start_date">Start Date</string>
     <string name="label_salary_range">Salary Range</string>

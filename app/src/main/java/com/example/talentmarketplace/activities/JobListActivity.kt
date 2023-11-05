@@ -43,7 +43,7 @@ class JobListActivity : AppCompatActivity(), JobListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_add -> {
-                val launcherIntent = Intent(this, MarketplaceActivity::class.java)
+                val launcherIntent = Intent(this, JobActivity::class.java)
                 getResults.launch(launcherIntent) } }
         return super.onOptionsItemSelected(item) }
 
@@ -55,7 +55,7 @@ class JobListActivity : AppCompatActivity(), JobListener {
                 .adapter)?.notifyItemRangeChanged(0, app.jobs.findAll().size) } }
 
     override fun onJobClick(job: MarketplaceModel, listIndex: Int) {
-        val launcherIntent = Intent(this, MarketplaceActivity::class.java)
+        val launcherIntent = Intent(this, JobActivity::class.java)
         launcherIntent.putExtra("job_edit", job)
         position = listIndex
         getClickResult.launch(launcherIntent) }

@@ -38,7 +38,7 @@
                 android:value="" />
         </activity>
 
-        <activity android:name=".activities.MarketplaceActivity">
+        <activity android:name=".activities.JobActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
