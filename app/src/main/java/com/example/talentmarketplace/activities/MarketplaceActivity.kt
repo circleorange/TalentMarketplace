@@ -44,6 +44,7 @@ class MarketplaceActivity : AppCompatActivity() {
         setupSalaryRangeSliderListener()
         setupAddButtonListener()
         setupSetLocationButtonListener()
+        setupStartDatePickerListener()
 
         if (intent.hasExtra("job_edit")) {
             edit = true
