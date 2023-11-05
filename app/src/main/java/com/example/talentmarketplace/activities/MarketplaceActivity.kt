@@ -1,9 +1,12 @@
 package com.example.talentmarketplace.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.talentmarketplace.R
 import com.example.talentmarketplace.databinding.ActivityJobBinding
 import com.example.talentmarketplace.main.MainApp
@@ -17,6 +20,7 @@ class MarketplaceActivity : AppCompatActivity() {
     private lateinit var binding: ActivityJobBinding
     var job = MarketplaceModel()
     lateinit var app: MainApp
+    private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +43,7 @@ class MarketplaceActivity : AppCompatActivity() {
             binding.description.setText(job.description)
             binding.btnAdd.setText(R.string.save_job) }
 
+        // Button - Create / Update Job
         binding.btnAdd.setOnClickListener() {
             i("onCreate() - add button pressed")
 
@@ -55,7 +60,18 @@ class MarketplaceActivity : AppCompatActivity() {
                 if (edit) { app.jobs.update(job.copy()) }
                 else { app.jobs.create(job.copy()) }
                 setResult(RESULT_OK)
-                finish() } } }
+                finish() } }
+
+        // Button - Set Location
+        binding.jobLocation.setOnClickListener {
+            i("Set Location Pressed") }
+
+        registerMapCallback()
+
+        binding.jobLocation.setOnClickListener {
+            val launcherIntent = Intent(this, MapActivity::class.java)
+            mapIntentLauncher.launch(launcherIntent) }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_job, menu)
@@ -64,4 +80,8 @@ class MarketplaceActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) { R.id.item_cancel -> { finish() } }
         return super.onOptionsItemSelected(item) }
+
+    private fun registerMapCallback() {
+        mapIntentLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()) { i("Map loaded") } }
 }
