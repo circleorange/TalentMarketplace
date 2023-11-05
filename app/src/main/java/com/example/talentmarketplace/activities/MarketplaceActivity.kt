@@ -22,7 +22,6 @@ class MarketplaceActivity : AppCompatActivity() {
     var job = MarketplaceModel()
     lateinit var app: MainApp
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
-    var location = Location(53.2744, -9.0494, 15f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,13 +54,13 @@ class MarketplaceActivity : AppCompatActivity() {
             job.description = binding.description.text.toString()
 
             if (job.title.isEmpty()) {
-                i("add job button pressed - invalid input")
+                i("onCreate() - add job button pressed - invalid input")
                 Snackbar
                     .make(it, R.string.invalid_job_title, Snackbar.LENGTH_LONG)
                     .show()
             }
             else {
-                i("add job button pressed - valid input: $job")
+                i("onCreate() - add job button pressed - valid input: $job")
                 if (edit) { app.jobs.update(job.copy()) }
                 else { app.jobs.create(job.copy()) }
                 setResult(RESULT_OK)
@@ -71,7 +70,13 @@ class MarketplaceActivity : AppCompatActivity() {
 
         // Button - Set Location
         binding.jobLocation.setOnClickListener {
-            i("set location button pressed")
+            i("onCreate() - set location button pressed")
+
+            val location = Location(53.2744, -9.0494, 15f)
+            if (job.zoom != 0f) {
+                location.lat = job.lat
+                location.lng = job.lng
+                location.zoom = job.zoom }
 
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
@@ -93,7 +98,10 @@ class MarketplaceActivity : AppCompatActivity() {
             ActivityResultContracts.StartActivityForResult()) {
             result -> when (result.resultCode) {
                 RESULT_OK -> { if (result.data != null) {
-                    location = result.data!!.extras?.getParcelable("location")!!
+                    val location = result.data!!.extras?.getParcelable<Location>("location")!!
+                    job.lat = location.lat
+                    job.lng = location.lng
+                    job.zoom = location.zoom
                     i("registerMapCallback() - valid location: $location") } }
                 RESULT_CANCELED -> { } else -> { } } }
     }
