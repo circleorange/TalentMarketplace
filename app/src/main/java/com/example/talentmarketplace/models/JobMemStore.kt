@@ -30,6 +30,8 @@ class JobMemStore: JobStore {
             logAll() }
     }
 
+    override fun delete(job: MarketplaceModel) { jobs. remove(job) }
+
     fun logAll() {
         jobs.forEach{ i("$it") } }
 }

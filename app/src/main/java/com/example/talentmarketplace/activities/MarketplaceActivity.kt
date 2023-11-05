@@ -22,12 +22,13 @@ class MarketplaceActivity : AppCompatActivity() {
     var job = MarketplaceModel()
     lateinit var app: MainApp
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
+    var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         i("onCreate() - Job Activity started")
 
-        var edit = false
+        edit = false
 
         binding = ActivityJobBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -87,10 +88,16 @@ class MarketplaceActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_job, menu)
+        if (edit) menu?.getItem(1)?.isVisible = true
         return super.onCreateOptionsMenu(menu) }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) { R.id.item_cancel -> { finish() } }
+        when (item.itemId) {
+            R.id.item_cancel -> { finish() }
+            R.id.item_delete -> {
+                app.jobs.delete(job)
+                setResult(99)
+                finish() } }
         return super.onOptionsItemSelected(item) }
 
     private fun registerMapCallback() {

@@ -7,7 +7,7 @@ import com.example.talentmarketplace.databinding.CardJobBinding
 import com.example.talentmarketplace.models.MarketplaceModel
 
 interface JobListener {
-    fun onJobClick(job: MarketplaceModel) }
+    fun onJobClick(job: MarketplaceModel, position: Int) }
 
 class JobAdapter constructor(
     private var jobs: List<MarketplaceModel>,
@@ -29,5 +29,5 @@ class JobAdapter constructor(
         fun bind(job: MarketplaceModel, listener: JobListener) {
             binding.jobTitle.text = job.title
             binding.description.text = job.description
-            binding.root.setOnClickListener { listener.onJobClick(job) } } }
+            binding.root.setOnClickListener { listener.onJobClick(job, adapterPosition) } } }
 }
