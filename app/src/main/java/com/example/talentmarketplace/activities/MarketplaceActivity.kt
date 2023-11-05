@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.example.talentmarketplace.R
 import com.example.talentmarketplace.databinding.ActivityJobBinding
 import com.example.talentmarketplace.main.MainApp
+import com.example.talentmarketplace.models.Location
 import com.example.talentmarketplace.models.MarketplaceModel
 
 import com.google.android.material.snackbar.Snackbar
@@ -36,6 +37,8 @@ class MarketplaceActivity : AppCompatActivity() {
 
         app = application as MainApp
 
+        registerMapCallback()
+
         if (intent.hasExtra("job_edit")) {
             edit = true
             job = intent.extras?.getParcelable("job_edit")!!
@@ -45,32 +48,36 @@ class MarketplaceActivity : AppCompatActivity() {
 
         // Button - Create / Update Job
         binding.btnAdd.setOnClickListener() {
-            i("onCreate() - add button pressed")
+            i("add job button pressed")
 
             job.title  = binding.jobTitle.text.toString()
             job.description = binding.description.text.toString()
 
             if (job.title.isEmpty()) {
-                i("onCreate() - add button pressed - invalid input")
+                i("add job button pressed - invalid input")
                 Snackbar
                     .make(it, R.string.invalid_job_title, Snackbar.LENGTH_LONG)
-                    .show() }
+                    .show()
+            }
             else {
-                i("onCreate() - add button pressed - valid input: $job")
+                i("add job button pressed - valid input: $job")
                 if (edit) { app.jobs.update(job.copy()) }
                 else { app.jobs.create(job.copy()) }
                 setResult(RESULT_OK)
-                finish() } }
+                finish()
+            }
+        }
 
         // Button - Set Location
         binding.jobLocation.setOnClickListener {
-            i("Set Location Pressed") }
+            i("set location button pressed")
 
-        registerMapCallback()
-
-        binding.jobLocation.setOnClickListener {
+            val location = Location(53.2744, -9.0494, 15f)
             val launcherIntent = Intent(this, MapActivity::class.java)
-            mapIntentLauncher.launch(launcherIntent) }
+                .putExtra("location", location)
+
+            mapIntentLauncher.launch(launcherIntent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

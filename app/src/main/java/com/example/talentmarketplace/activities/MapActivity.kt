@@ -11,11 +11,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.talentmarketplace.databinding.ActivityMapBinding
+import com.example.talentmarketplace.models.Location
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapActivity: AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var mMap: GoogleMap
+    private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapBinding
+    private var location = Location()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,18 +25,22 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        location = intent.extras?.getParcelable<Location>("location")!!
+
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-    }
+
+        mapFragment.getMapAsync(this) }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+        val defaultLocation = LatLng(location.lat, location.lng)
+        val options = MarkerOptions()
+            .title("Default Job Marker")
+            .snippet("GPS: $defaultLocation")
+            .draggable(true)
+            .position(defaultLocation)
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-    }
+        map = googleMap
+        map.addMarker(options)
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 16f)) }
 }
