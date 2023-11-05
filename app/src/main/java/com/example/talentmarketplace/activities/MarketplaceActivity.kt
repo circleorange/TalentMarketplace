@@ -22,6 +22,7 @@ class MarketplaceActivity : AppCompatActivity() {
     var job = MarketplaceModel()
     lateinit var app: MainApp
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
+    var location = Location(53.2744, -9.0494, 15f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +73,6 @@ class MarketplaceActivity : AppCompatActivity() {
         binding.jobLocation.setOnClickListener {
             i("set location button pressed")
 
-            val location = Location(53.2744, -9.0494, 15f)
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
 
@@ -90,5 +90,11 @@ class MarketplaceActivity : AppCompatActivity() {
 
     private fun registerMapCallback() {
         mapIntentLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()) { i("Map loaded") } }
+            ActivityResultContracts.StartActivityForResult()) {
+            result -> when (result.resultCode) {
+                RESULT_OK -> { if (result.data != null) {
+                    location = result.data!!.extras?.getParcelable("location")!!
+                    i("registerMapCallback() - valid location: $location") } }
+                RESULT_CANCELED -> { } else -> { } } }
+    }
 }
