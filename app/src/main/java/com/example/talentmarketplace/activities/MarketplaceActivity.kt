@@ -1,5 +1,6 @@
 package com.example.talentmarketplace.activities
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +16,7 @@ import com.example.talentmarketplace.models.MarketplaceModel
 
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber.i
+import java.util.Calendar
 
 class MarketplaceActivity : AppCompatActivity() {
 
@@ -45,6 +47,7 @@ class MarketplaceActivity : AppCompatActivity() {
             job = intent.extras?.getParcelable("job_edit")!!
             binding.jobTitle.setText(job.title)
             binding.description.setText(job.description)
+            binding.companyName.setText(job.companyName)
             binding.btnAdd.setText(R.string.save_job) }
 
         // Button - Create / Update Job
@@ -53,6 +56,7 @@ class MarketplaceActivity : AppCompatActivity() {
 
             job.title  = binding.jobTitle.text.toString()
             job.description = binding.description.text.toString()
+            job.companyName = binding.companyName.text.toString()
 
             if (job.title.isEmpty()) {
                 i("onCreate() - add job button pressed - invalid input")
@@ -84,6 +88,13 @@ class MarketplaceActivity : AppCompatActivity() {
 
             mapIntentLauncher.launch(launcherIntent)
         }
+
+        binding.startDate.setOnClickListener {
+            showStartDatePickerDialog()
+        }
+
+        // Set up the salary range slider
+        setupSalaryRangeSlider()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -111,5 +122,24 @@ class MarketplaceActivity : AppCompatActivity() {
                     job.zoom = location.zoom
                     i("registerMapCallback() - valid location: $location") } }
                 RESULT_CANCELED -> { } else -> { } } }
+    }
+
+    private fun showStartDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val dpd = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+            binding.startDate.updateDate(selectedYear, selectedMonth, selectedDay)
+        }, year, month, day)
+        dpd.show()
+    }
+
+    private fun setupSalaryRangeSlider() {
+        binding.salaryRange.addOnChangeListener { slider, _, _ ->
+            val values = slider.values
+            job.minSalary = values[0]
+            job.maxSalary = values[1]
+        }
     }
 }

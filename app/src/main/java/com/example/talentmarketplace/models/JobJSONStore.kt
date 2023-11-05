@@ -16,6 +16,7 @@ import com.google.gson.JsonSerializer
 import com.google.gson.reflect.TypeToken
 import timber.log.Timber.i
 import java.lang.reflect.Type
+import java.util.Date
 import java.util.Random
 
 const val JSON_FILE = "jobs.json"
@@ -48,11 +49,7 @@ class JobJSONStore(private val context: Context): JobStore {
         var foundJob: MarketplaceModel? = jobsList.find { updatedJob -> updatedJob.id == job.id }
         if (foundJob == null) { i("update() - null job found"); return }
 
-        foundJob.title = job.title
-        foundJob.description = job.description
-        foundJob.lat = job.lat
-        foundJob.lng = job.lng
-        foundJob.zoom = job.zoom
+        updateJob(foundJob, job)
         serialize() }
 
     override fun delete(job: MarketplaceModel) {
@@ -83,4 +80,16 @@ class UriParser: JsonDeserializer<Uri>, JsonSerializer<Uri> {
         typeOfSrc: Type?,
         context: JsonSerializationContext?
     ): JsonElement { return JsonPrimitive(src.toString()) }
+}
+
+private fun updateJob(existingJob: MarketplaceModel, updatedJob: MarketplaceModel) {
+    existingJob.companyName = updatedJob.companyName
+    existingJob.title = updatedJob.title
+    existingJob.description = updatedJob.description
+    existingJob.startDate = updatedJob.startDate
+    existingJob.minSalary = updatedJob.minSalary
+    existingJob.maxSalary = updatedJob.maxSalary
+    existingJob.lat = updatedJob.lat
+    existingJob.lng = updatedJob.lng
+    existingJob.zoom = updatedJob.zoom
 }
